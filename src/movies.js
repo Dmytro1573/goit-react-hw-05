@@ -1,75 +1,37 @@
 import axios from "axios";
+
+const API_KEY = "8adc6def86cb26853c30b1299a4bafbd";
 axios.defaults.baseURL = "https://api.themoviedb.org/3/";
-const API_KEY = "f0f619fb73f28b210028d7f1f3c1ecea";
 
-const options = {
-  headers: {
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMGY2MTlmYjczZjI4YjIxMDAyOGQ3ZjFmM2MxZWNlYSIsInN1YiI6IjY2NmVhNGMyYzllYjQ4ODYyYThjOTVjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rsFIlo4yHEZi4zpDxsoZy645HU7GlRiN40y9AvKbLAM",
-  },
+export const fetchTrendMovies = async () => {
+  const response = await axios.get(`trending/movie/day?api_key=${API_KEY}`);
+  return response.data;
 };
 
-export const getTrendMovie = async () => {
-  try {
-    const response = await axios.get(
-      `trending/movie/day?api_key=${API_KEY}language=en-US`,
-      options
-    );
-    return response.data;
-  } catch (error) {
-    console.log("Sorry something went wrong:", error);
-    throw error;
-  }
+export const fetchMovieByKeyword = async (query) => {
+  const response = await axios.get(
+    `search/movie?api_key=${API_KEY}&language=en-US&query=${query}&page=1&include_adult=false`
+  );
+  return response.data;
 };
 
-export const searchMovies = async (query) => {
-  try {
-    const response = await axios.get(
-      `search/movie?api_key=${API_KEY}&query=${query}include_adult=false&language=en-US&page=1`,
-      options
-    );
-    return response.data;
-  } catch (error) {
-    console.log("Sorry something went wrong:", error);
-    throw error;
-  }
+export const fetchMovieDetails = async (movieId) => {
+  const response = await axios.get(
+    `movie/${movieId}?api_key=${API_KEY}&language=en-US`
+  );
+  return response.data;
 };
 
-export const moviesDetails = async (movieId) => {
-  try {
-    const response = await axios.get(
-      `movie/${movieId}?api_key=${API_KEY}&language=en-US`,
-      options
-    );
-    return response.data;
-  } catch (error) {
-    console.log("Sorry something went wrong:", error);
-    throw error;
-  }
+export const fetchMovieReviews = async (movieId) => {
+  const response = await axios.get(
+    `movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`
+  );
+  return response.data;
 };
 
-export const moviesCredits = async (movieId) => {
-  try {
-    const response = await axios.get(
-      `movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`,
-      options
-    );
-    response.data;
-  } catch (error) {
-    console.log("Sorry something went wrong:", error);
-    throw error;
-  }
-};
-
-export const moviesReviews = async (movieId) => {
-  try {
-    const response = await axios.get(
-      `movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US&page=1`,
-      options
-    );
-    return response.data;
-  } catch (error) {
-    console.log("Sorry something went wrong:", error);
-    throw error;
-  }
+export const fetchMovieCast = async (movieId) => {
+  const response = await axios.get(
+    `movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`
+  );
+  return response.data;
 };
