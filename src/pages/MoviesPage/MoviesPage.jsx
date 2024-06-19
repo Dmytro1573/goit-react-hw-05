@@ -1,10 +1,11 @@
-import { useSearchParams, useLocation, Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchMovieByKeyword } from "../../movies";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Loader from "../../components/Loader/Loader";
 import toast from "react-hot-toast";
 import css from "./MoviesPage.module.css";
+import MovieList from "../../components/MovieList/MovieList";
 
 const notify = (msg) =>
   toast.error(`${msg}`, {
@@ -20,7 +21,6 @@ const notify = (msg) =>
   });
 
 export default function MoviesPage() {
-  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const movieName = searchParams.get("movieName") ?? "";
   const [moviesList, setMoviesList] = useState([]);
@@ -70,22 +70,9 @@ export default function MoviesPage() {
         {error && (
           <p>There is no movies with this request. Please, try again</p>
         )}
-        <ul className={css.movieList}>
-          {moviesList.map((movie) => {
-            return (
-              <li key={movie.id}>
-                <Link
-                  to={`/movies/${movie.id}`}
-                  state={{ from: location }}
-                  className={css.item}
-                >
-                  {movie.original_title || movie.name}
-                </Link>
-              </li>
-            );
-          })}
-          {loading && <Loader />}
-        </ul>
+        <MovieList movies={moviesList} />
+
+        {loading && <Loader />}
       </div>
     </main>
   );
